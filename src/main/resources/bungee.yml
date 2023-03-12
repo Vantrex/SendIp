@@ -1,0 +1,4 @@
+name: SendIp
+version: '${version}'
+main: de.vantrex.sendip.SendIp
+description: Adds the /sendip command 
