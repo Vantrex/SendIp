@@ -48,14 +48,18 @@ public class SendIpCommand extends Command implements TabExecutor {
         }
         final ProxiedPlayer targetPlayer = ProxyServer.getInstance().getPlayer(args[0]);
         if (targetPlayer == null) {
-          player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Es wurde kein Spieler mit diesem Namen gefunden.", ChatColor.RED));
-          return;
+            player.sendMessage(ChatMessageType.ACTION_BAR,
+                    TextComponent.fromLegacyText("Es wurde kein Spieler mit diesem Namen gefunden.", ChatColor.RED));
+            return;
         }
         final String targetServerName = args[1].toLowerCase();
         final ServerInfo targetServer;
-        if ((targetServer = ProxyServer.getInstance().getServers().entrySet().stream().filter(entry -> entry.getKey().toLowerCase().equals(targetServerName)).map(Map.Entry::getValue).findFirst().orElse(null)) == null) {
-           player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Es wurde kein Server mit diesem Namen gefunden.", ChatColor.RED));
-           return;
+        if ((targetServer = ProxyServer.getInstance().getServers().entrySet().stream()
+                .filter(entry -> entry.getKey().toLowerCase().equals(targetServerName))
+                .map(Map.Entry::getValue).findFirst().orElse(null)) == null) {
+            player.sendMessage(ChatMessageType.ACTION_BAR,
+                    TextComponent.fromLegacyText("Es wurde kein Server mit diesem Namen gefunden.", ChatColor.RED));
+            return;
         }
         final Collection<ProxiedPlayer> playersToSend = getPlayersFromSameHost(targetPlayer);
         new MassConnectionRequest(plugin, playersToSend).executor(player).server(targetServer).handle();
@@ -65,10 +69,13 @@ public class SendIpCommand extends Command implements TabExecutor {
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1) {
             final String current = args[0].toLowerCase();
-            return ProxyServer.getInstance().getPlayers().parallelStream().map(player -> player.getName().toLowerCase()).filter(player -> player.startsWith(current)).collect(Collectors.toList());
+            return ProxyServer.getInstance().getPlayers().parallelStream()
+                    .map(player -> player.getName().toLowerCase())
+                    .filter(player -> player.startsWith(current)).collect(Collectors.toList());
         } else if (args.length == 2) {
             final String current = args[1].toLowerCase();
-            return ProxyServer.getInstance().getServers().keySet().parallelStream().filter(s -> s.toLowerCase().startsWith(current)).collect(Collectors.toList());
+            return ProxyServer.getInstance().getServers().keySet()
+                    .parallelStream().filter(s -> s.toLowerCase().startsWith(current)).collect(Collectors.toList());
         }
         return new ArrayList<>();
     }

@@ -61,10 +61,14 @@ public class MassConnectionRequest implements ConnectionRequest {
 
     @Override
     public void handle() {
-        executor.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Probiere " + this.playersToConnect.size() + " Spieler auf " + toConnect.getName() + " zu senden..", ChatColor.RED));
+        executor.sendMessage(ChatMessageType.ACTION_BAR,
+                TextComponent.fromLegacyText("Probiere " + this.playersToConnect.size() + " Spieler auf "
+                        + toConnect.getName() + " zu senden..", ChatColor.RED));
         final List<CompletableFuture<Void>> futureList = new ArrayList<>();
         this.playersToConnect.forEach(player -> {
-            player.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Du wurdest von " + executor.getName() + " auf " + this.toConnect.getName() + " gesendet.", ChatColor.WHITE));
+            player.sendMessage(ChatMessageType.ACTION_BAR,
+                    TextComponent.fromLegacyText("Du wurdest von "
+                            + executor.getName() + " auf " + this.toConnect.getName() + " gesendet.", ChatColor.WHITE));
             futureList.add(CompletableFuture.supplyAsync(() -> player).thenAccept(player1 -> {
                 player1.connect(ServerConnectRequest.builder()
                         .target(this.toConnect)
